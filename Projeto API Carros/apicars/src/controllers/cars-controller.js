@@ -1,12 +1,17 @@
 import { prisma } from "../helpers/utils.js";
 
 export const getAllcar = async (request, reply) => {
+  const {skip = 0, take = 2} = request.query;
   try {
-    const cars = await prisma.car.findMany();
+    const cars = await prisma.car.findMany({
+      skip: +skip,
+      take: +take,
+    });
+    
     return cars;
   } catch (error) {
     console.log(error);
-    reply.status(500).send("Não foi possível criar o carro");
+    reply.status(500).send("Não foi possível listar o carro");
   }
 };
 
